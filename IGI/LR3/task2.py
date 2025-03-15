@@ -6,7 +6,6 @@ Version: 1.0
 Developer: Mahiliavets Dzianis
 Date: 2025-03-05
 """
-from utils import get_valid_input
 
 def count_odd_natural_numbers():
     """Count odd natural numbers entered by the user until 0 is input."""
