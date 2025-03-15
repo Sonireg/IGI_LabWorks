@@ -59,7 +59,10 @@ def task4c(sentence: str) -> list[str]:
 
 def task4_main():
     """Main function for Task 4: runs analysis on a predefined text."""
-    sample_text = "So she was considering in her own mind, as well as she could, for the hot day made her feel very sleepy and stupid, whether the pleasure of making a daisy-chain would be worth the trouble of getting up and picking the daisies, when suddenly a White Rabbit with pink eyes ran close by her."
+    sample_text = "So she was considering in her own mind, as well as she could, for the " \
+    "hot day made her feel very sleepy and stupid, whether the pleasure of making a daisy-chain " \
+    "would be worth the trouble of getting up and picking the daisies, when suddenly a White Rabbit " \
+    "with pink eyes ran close by her."
     
     print("4a: Number of words starting with a vowel:", task4a(sample_text))
     
