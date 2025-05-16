@@ -1,0 +1,35 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}CRUD Index{% endblock %}
+{% block content %}
+
+<body>
+    <div class="content">
+        {% if user.is_authenticated %}
+        {% if user.profile.role  %}
+        <h1>Здравствуйте, {{ user.username }} {{ user.profile.role }}!</h1>
+        {% else %}
+        <h1>Здравствуйте, {{ user.username }} админ!</h1>
+        {% endif %}
+        {% else %}
+            <h1>Привет, неизвестный водитель!</h1>
+        {% endif %}
+        {% if last_article %}
+            <h2>{{ last_article.title }}</h2>
+            <img src="{{ last_article.image.url }}" alt="Картинка" width="400">
+            <p>{{ last_article.short_description }}</p>
+        {% else %}
+            <p>Пока нет опубликованных статей.</p>
+        {% endif %}
+    </div>
+    <a href="{% url 'register_client' %}">Зарегистрироваться</a><br>
+    <a href="{% url 'login_client' %}">Войти как клиент</a><br>
+    <a href="{% url 'login_master' %}">Войти как мастер</a>
+    {% if user.is_authenticated %}
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Выйти</button>
+        </form>
+    {% endif %}
+</body>
+{% endblock %}

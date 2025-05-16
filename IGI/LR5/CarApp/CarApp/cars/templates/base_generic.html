@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CarApp{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{% url 'mainpage' %}">Главная</a>
+            <a href="{% url 'about' %}">О компании</a>
+            <a href="{% url 'news_list' %}">Новости</a>
+            <a href="{% url 'glossary' %}">Вопросы и ответы</a>
+            <a href="{% url 'contacts' %}">Мастера</a>
+            <a href="{% url 'policy' %}">Политика конфиденциальности</a>
+            <a href="{% url 'career' %}">Вакансии</a>
+            <a href="#">Клиенты</a>
+            <a href="{% url 'services' %}">Услуги</a>
+
+            {% if user.is_authenticated %}
+                {% if user.profile.role == 'client' %}
+                    <a href="{% url 'client_order_list' %}">Мои заказы</a>
+                    <a href="{% url 'create_order' %}">Сделать заказ</a>
+                {% elif user.profile.role == 'master' %}
+                    <a href="{% url 'order_list' %}">Заказы</a>
+                    <a href="{% url 'crud_index' %}">Добавить что-нибудь</a>
+                {% endif %}
+            {% endif %}
+            
+        </nav>
+    </header>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+    <footer>
+        <p>&copy; 2023 CarApp. All rights reserved.</p>
+    </footer>
+</body>
+</html>

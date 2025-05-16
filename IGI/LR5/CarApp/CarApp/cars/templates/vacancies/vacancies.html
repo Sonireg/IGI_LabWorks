@@ -1,0 +1,19 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}CRUD Index{% endblock %}
+{% block content %}
+<body>
+    <h1>Вакансии</h1>
+    
+    <ul>
+        {% for vacancy in vacancies %}
+            <li>
+                <h2>{{ news.name }}</h2>
+                <p>{{ news.content }}</p>
+            </li>
+        {% empty %}
+            <li>Вакансий пока нет.</li>
+        {% endfor %}
+    </ul>
+</body>
+{% endblock %}

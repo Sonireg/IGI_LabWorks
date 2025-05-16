@@ -1,0 +1,94 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+  <h1>{% if form.instance.pk %}Редактировать{% else %}Добавить{% endif %} услугу</h1>
+
+  <form method="post" id="service-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <h3>Запчасти</h3>
+    {{ formset.management_form }}
+
+    <div id="formset">
+      {% for form in formset %}
+        <div class="form-row">
+          {{ form.as_p }}
+          <button type="button" class="remove-form">Удалить</button>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Пустая форма-шаблон (не отображается, просто для клонирования) -->
+    <div class="form-row d-none" id="empty-form-template">
+      {{ formset.empty_form.as_p }}
+      <button type="button" class="remove-form">Удалить</button>
+    </div>
+
+    <button type="button" id="add-form">Добавить запчасть</button>
+    <br><br>
+    <button type="submit">Сохранить</button>
+  </form>
+
+  <a href="{% url 'service_list' %}">← Назад</a>
+
+  <style>
+    .form-row {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    .d-none {
+      display: none;
+    }
+  </style>
+
+  <script>
+    const formset = document.getElementById('formset');
+    const addFormBtn = document.getElementById('add-form');
+    const totalFormsInput = document.getElementById('id_servicepart_set-TOTAL_FORMS');
+    const emptyFormTemplate = document.getElementById('empty-form-template');
+
+    function updateFormAttributes(form, index) {
+      form.querySelectorAll('input, select, textarea, label').forEach(el => {
+        if (el.name) {
+          el.name = el.name.replace(/-\d+-/, `-${index}-`);
+        }
+        if (el.id) {
+          el.id = el.id.replace(/-\d+-/, `-${index}-`);
+        }
+        if (el.htmlFor) {
+          el.htmlFor = el.htmlFor.replace(/-\d+-/, `-${index}-`);
+        }
+      });
+    }
+
+    function attachRemoveButtons() {
+      document.querySelectorAll('.remove-form').forEach(btn => {
+        btn.onclick = () => {
+          const row = btn.closest('.form-row');
+          row.remove();
+
+          // Обновляем индексы и счётчик форм
+          const forms = formset.querySelectorAll('.form-row');
+          totalFormsInput.value = forms.length;
+          forms.forEach((form, i) => updateFormAttributes(form, i));
+        };
+      });
+    }
+
+    addFormBtn.addEventListener('click', () => {
+      const newForm = emptyFormTemplate.cloneNode(true);
+      newForm.classList.remove('d-none');
+      const formCount = parseInt(totalFormsInput.value);
+
+      updateFormAttributes(newForm, formCount);
+      totalFormsInput.value = formCount + 1;
+
+      formset.appendChild(newForm);
+      attachRemoveButtons();
+    });
+
+    // При первой загрузке
+    attachRemoveButtons();
+  </script>
+{% endblock %}

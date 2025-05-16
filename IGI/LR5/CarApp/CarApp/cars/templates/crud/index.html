@@ -1,0 +1,16 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}CRUD Index{% endblock %}
+{% block content %}
+<body>
+  <h1>Админский CRUD</h1>
+  <ul>
+    <li><a href="{% url 'cartype_list' %}">Типы авто</a></li>
+    <li><a href="{% url 'parttype_list' %}">Виды запчастей</a></li>
+    <li><a href="{% url 'part_list' %}">Запчасти</a></li>
+    <li><a href="{% url 'service_list' %}">Услуги</a></li>
+    <li><a href="{% url 'servicetype_list' %}">Типы услуг</a></li>
+    
+  </ul>
+</body>
+{% endblock %}

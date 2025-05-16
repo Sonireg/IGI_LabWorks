@@ -1,0 +1,33 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}CRUD Index{% endblock %}
+{% block content %}
+<body>
+    <header>
+        <h1>Контакты</h1>
+        <p>На этой странице представлены наши специалисты с контактной информацией.</p>
+    </header>
+
+    <main>
+        <div class="masters">
+            {% for master in masters %}
+                <div class="master">
+                    <img src="{{ master.profile.photo.url }}" alt="{{ master.profile.full_name }}" class="master-photo">
+                    <h2>{{ master.profile.full_name }}</h2>
+                    <p><strong>Специализация:</strong> {{ master.specialization.name }}</p>
+                    <p><strong>Опыт работы:</strong> {{ master.experience }} лет</p>
+                    <p><strong>Телефон:</strong> {{ master.profile.phone }}</p>
+                    <p><strong>Электронная почта:</strong> <a href="mailto:{{ master.profile.email }}">{{ master.profile.email }}</a></p>
+                    <p><strong>Адрес:</strong> {{ master.profile.address }}</p>
+                </div>
+            {% empty %}
+                <p>Сейчас нет доступных мастеров.</p>
+            {% endfor %}
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Ваш сервис. Все права защищены.</p>
+    </footer>
+</body>
+{% endblock %}

@@ -1,0 +1,6 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+  <h1>{% if object %}Редактировать{% else %}Добавить{% endif %} тип детали</h1>
+  <form method="post">{% csrf_token %}{{ form.as_p }}<button>Сохранить</button></form>
+  <a href="{% url 'parttype_list' %}">← Назад</a>
+{% endblock %}

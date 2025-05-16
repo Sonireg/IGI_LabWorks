@@ -1,0 +1,23 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}CRUD Index{% endblock %}
+{% block content %}
+<body>
+
+    <h1>Новости</h1>
+    <ul>
+        {% for news in news_items %}
+            <li>
+                <h2>{{ news.title }}</h2>
+                <p>{{ news.summary }}</p>
+                {% if news.image %}
+                    <img src="{{ news.image.url }}" alt="Картинка новости" width="200">
+                {% endif %}
+                <a href="{% url 'news_detail' news.id %}">Читать далее</a>
+            </li>
+        {% empty %}
+            <li>Новостей пока нет.</li>
+        {% endfor %}
+    </ul>
+</body>
+{% endblock %}

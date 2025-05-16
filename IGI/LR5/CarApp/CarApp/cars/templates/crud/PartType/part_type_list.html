@@ -1,0 +1,16 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+  <h1>Типы деталей</h1>
+  <a href="{% url 'parttype_add' %}">Добавить тип детали</a>
+  <ul>
+    {% for obj in object_list %}
+      <li>
+        {{ obj.name }} — {{ obj.description }}
+        [<a href="{% url 'parttype_edit' obj.pk %}">✎</a>]
+        [<a href="{% url 'parttype_delete' obj.pk %}">🗑</a>]
+      </li>
+    {% empty %}
+      <li>Пока нет типов деталей.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

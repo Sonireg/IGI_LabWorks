@@ -1,0 +1,14 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}CRUD Index{% endblock %}
+{% block content %}
+<body>
+
+    <h1>{{ news.title }}</h1>
+    {% if news.image %}
+        <img src="{{ news.image.url }}" alt="Картинка" width="400">
+    {% endif %}
+    <p>{{ news.content }}</p>
+    <a href="{% url 'news_list' %}">← Назад к списку</a>
+</body>
+{% endblock %}

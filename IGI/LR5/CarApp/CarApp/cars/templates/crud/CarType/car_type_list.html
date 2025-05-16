@@ -1,0 +1,16 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+  <h1>Типы автомобилей</h1>
+  <a href="{% url 'cartype_add' %}">Добавить тип авто</a>
+  <ul>
+    {% for obj in object_list %}
+      <li>
+        {{ obj.name }} — {{ obj.description }}
+        [<a href="{% url 'cartype_edit' obj.pk %}">✎</a>]
+        [<a href="{% url 'cartype_delete' obj.pk %}">🗑</a>]
+      </li>
+    {% empty %}
+      <li>Пока нет типов авто.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

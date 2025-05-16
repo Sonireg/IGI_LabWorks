@@ -1,0 +1,18 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}CRUD Index{% endblock %}
+{% block content %}
+<body>
+    <h1>Вопросы и ответы</h1>
+    <ul>
+        {% for entry in entries %}
+            <li>
+                <strong>{{ entry.term }}</strong> ({{ entry.created_at }}):<br>
+                {{ entry.definition }}
+            </li>
+        {% empty %}
+            <li>Пока нет вопросов.</li>
+        {% endfor %}
+    </ul>
+</body>
+{% endblock %}

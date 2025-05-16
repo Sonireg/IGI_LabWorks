@@ -1,0 +1,22 @@
+{% extends "base_generic.html" %}
+{% block content %}
+  <h1>Наши услуги</h1>
+
+  {% if services %}
+    <ul>
+      {% for service in services %}
+        <li>
+          <h3>{{ service.name }}</h3>
+          <p><strong>Категория:</strong> {{ service.service_type.name }}</p>
+          <p><strong>Описание:</strong> {{ service.description }}</p>
+          <p><strong>Цена:</strong> {{ service.price }} руб.</p>
+          <p><strong>Длительность:</strong> {{ service.duration }}</p>
+        </li>
+        <hr>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Услуги пока не добавлены.</p>
+  {% endif %}
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+  <h1>Мои заказы</h1>
+
+  {% if orders %}
+    <table border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Статус</th>
+          <th>Мастер</th>
+          <th>Тип авто</th>
+          <th>Дата создания</th>
+          <th>Стоимость</th>
+          <th>Заметки</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+          <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.get_status_display }}</td>
+            <td>
+              {% if order.master %}
+                {{ order.master.profile.full_name }}
+              {% else %}
+                (не назначен)
+              {% endif %}
+            </td>
+            <td>{{ order.car_type.name }}</td>
+            <td>{{ order.created_at|date:"d/m/Y" }}</td>
+            <td>{{ order.total_price }} BYN</td>
+            <td>{{ order.notes|default:"—" }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>У вас пока нет заказов.</p>
+  {% endif %}
+{% endblock %}

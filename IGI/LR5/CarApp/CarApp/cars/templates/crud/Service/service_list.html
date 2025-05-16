@@ -1,0 +1,36 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+  <h1>Наши услуги</h1>
+  <a href="{% url 'service_add' %}" style="display:inline-block;margin-bottom:10px;">➕ Добавить услугу</a>
+  <ul>
+    {% for obj in object_list %}
+      <li style="margin-bottom:20px;">
+        <strong>{{ obj.name }}</strong><br>
+        Категория: {{ obj.service_type.name }}<br><br>
+
+        <strong>Описание:</strong> {{ obj.description|linebreaksbr }}<br><br>
+
+        <strong>Цена:</strong> {{ obj.price }} руб.<br>
+        <strong>Длительность:</strong> {{ obj.duration }}<br><br>
+
+        🔧 <strong>Запчасти:</strong>
+        {% if obj.servicepart_set.all %}
+          <ul>
+            {% for sp in obj.servicepart_set.all %}
+              <li>{{ sp.part.name }} — {{ sp.quantity }} шт.</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <em>Нет</em>
+        {% endif %}
+
+        <br>
+        [<a href="{% url 'service_edit' obj.pk %}">✎ Редактировать</a>]
+        [<a href="{% url 'service_delete' obj.pk %}">🗑 Удалить</a>]
+      </li>
+    {% empty %}
+      <li>Пока нет услуг.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

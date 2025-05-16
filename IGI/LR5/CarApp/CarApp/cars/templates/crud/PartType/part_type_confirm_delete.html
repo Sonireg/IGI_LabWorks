@@ -1,0 +1,7 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+  <h1>Удалить тип детали?</h1>
+  <p>Вы точно хотите удалить "{{ object.name }}"?</p>
+  <form method="post">{% csrf_token %}<button>Да, удалить</button></form>
+  <a href="{% url 'parttype_list' %}">Нет, вернуться</a>
+{% endblock %}
