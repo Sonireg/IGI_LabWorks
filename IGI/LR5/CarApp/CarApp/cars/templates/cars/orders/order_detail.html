@@ -1,0 +1,29 @@
+
+{% extends 'base_generic.html' %}
+{% block content %}
+  <h1>Детали заказа #{{ order.id }}</h1>
+  <p><strong>Статус:</strong> {{ order.get_status_display }}</p>
+  <p><strong>Клиент:</strong> {{ order.client.profile.full_name }}</p>
+  <p><strong>Мастер:</strong> 
+    {% if order.master %}
+      {{ order.master.profile.full_name }}
+    {% else %}
+      (не назначен)
+    {% endif %}
+  </p>
+  <p><strong>Тип авто:</strong> {{ order.car_type.name }}</p>
+  <p><strong>Дата создания:</strong> {{ order.created_at|date:"d/m/Y" }}</p>
+  <p><strong>Стоимость:</strong> {{ order.total_price }} BYN</p>
+  <p><strong>Заметки:</strong> {{ order.notes|default:"—" }}</p>
+
+  <h2>Услуги</h2>
+  {% if order.services.exists %}
+    <ul>
+      {% for service in order.services.all %}
+        <li>{{ service.name }} ({{ service.price }} BYN)</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Услуги не добавлены.</p>
+  {% endif %}
+{% endblock %}

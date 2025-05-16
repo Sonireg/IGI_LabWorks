@@ -8,7 +8,7 @@
         <tr>
           <th>ID</th>
           <th>Статус</th>
-          <th>Мастер</th>
+          <th>Клиент</th>
           <th>Тип авто</th>
           <th>Дата создания</th>
           <th>Стоимость</th>
@@ -18,15 +18,9 @@
       <tbody>
         {% for order in orders %}
           <tr>
-            <td>{{ order.id }}</td>
+            <td><a href="{% url 'order_detail' order.id %}">{{ order.id }}</a></td>
             <td>{{ order.get_status_display }}</td>
-            <td>
-              {% if order.master %}
-                {{ order.master.profile.full_name }}
-              {% else %}
-                (не назначен)
-              {% endif %}
-            </td>
+            <td>{{ order.client.profile.full_name }}</td>
             <td>{{ order.car_type.name }}</td>
             <td>{{ order.created_at|date:"d/m/Y" }}</td>
             <td>{{ order.total_price }} BYN</td>

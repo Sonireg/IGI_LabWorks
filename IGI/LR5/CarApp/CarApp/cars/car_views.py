@@ -1,7 +1,6 @@
-
 from .models import Order
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import OrderForm
 from .models import Profile, Client, Order, Service
 
@@ -46,6 +45,19 @@ def create_order(request):
         form = OrderForm()
 
     return render(request, 'cars/orders/create_order.html', {'form': form})
+
+@login_required
+def order_detail(request, pk):
+    order = get_object_or_404(Order.objects.select_related('client__profile', 'master__profile', 'car_type').prefetch_related('services'), pk=pk)
+    profile = request.user.profile
+
+    # Ensure the user has permission to view the order
+    if profile.role == 'client' and order.client.profile != profile:
+        return render(request, 'cars/orders/not_allowed.html')
+    if profile.role == 'master' and order.master and order.master.profile != profile:
+        return render(request, 'cars/orders/not_allowed.html')
+
+    return render(request, 'cars/orders/order_detail.html', {'order': order})
 
 def services_list(request):
     services = Service.objects.all().select_related('service_type')

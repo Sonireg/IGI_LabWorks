@@ -5,6 +5,8 @@ from django.core.validators import MinValueValidator
 class CarType(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)  # Время добавления
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)  # Время обновления
 
     def __str__(self):
         return self.name
@@ -23,6 +25,8 @@ class Profile(models.Model):
     email = models.EmailField(blank=True, null=True)
     full_name = models.CharField(max_length=255)
     age = models.IntegerField(MinValueValidator(18), blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)  # Время добавления
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)  # Время обновления
     def __str__(self):
         return f"{self.full_name} ({self.role})"
 
@@ -33,7 +37,8 @@ class Profile(models.Model):
 class ServiceType(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True)
-
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)  # Время добавления    
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)  # Время обновления
     def __str__(self):
         return self.name
 
@@ -41,7 +46,8 @@ class ServiceType(models.Model):
 class PartType(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True)
-
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)  # Время добавления
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)  # Время обновления
     def __str__(self):
         return self.name
 
@@ -52,6 +58,8 @@ class Part(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     quantity = models.PositiveIntegerField(default=0)
     compatible_car_types = models.ManyToManyField(CarType)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)  # Время добавления
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)  # Время обновления
 
     def __str__(self):
         return f"{self.name} ({self.part_type.name})"
@@ -64,7 +72,8 @@ class Service(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     duration = models.DurationField()
     parts = models.ManyToManyField(Part, through='ServicePart')
-
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)  # Время добавления
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)  # Время обновления
     def __str__(self):
         return f"{self.name} - {self.price} руб."
 
@@ -72,14 +81,14 @@ class Service(models.Model):
 class MasterSpecialization(models.Model):
     name = models.CharField(max_length=100, unique=True)
     service_types = models.ManyToManyField(ServiceType)
-
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)  # Время добавления
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)  # Время обновления
     def __str__(self):
         return self.name
 
 # Клиенты
 class Client(models.Model):
-    profile = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name='client', blank=True, null=True)
-
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name='client', blank=True, null=True) 
     def __str__(self):
         return self.profile.full_name
 
@@ -89,7 +98,8 @@ class Master(models.Model):
     experience = models.PositiveIntegerField(default=0)
     car_types = models.ManyToManyField(CarType)
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name='master', blank=True, null=True)
-
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)  # Время добавления
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)  # Время обновления
 
     def __str__(self):
         return f"{self.profile.full_name} ({self.specialization.name})"
@@ -107,13 +117,12 @@ class Order(models.Model):
     master = models.ForeignKey(Master, on_delete=models.SET_NULL, null=True, blank=True)
     car_type = models.ForeignKey(CarType, on_delete=models.PROTECT)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)  # Removed duplicate field
+    updated_at = models.DateTimeField(auto_now=True)      # Removed duplicate field
     total_price = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     notes = models.TextField(blank=True)
 
     services = models.ManyToManyField(Service, through='OrderService')
-
     def __str__(self):
         return f"Заказ #{self.id} - {self.client.profile.full_name} ({self.status})"
 
@@ -122,7 +131,8 @@ class OrderService(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     service = models.ForeignKey(Service, on_delete=models.PROTECT)
     quantity = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1)])
-
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)  # Время добавления
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)  # Время обновления
     class Meta:
         unique_together = ('order', 'service')
 
@@ -132,7 +142,8 @@ class ServicePart(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)  # <- исправлено
     part = models.ForeignKey(Part, on_delete=models.PROTECT)
     quantity = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1)])
-
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)  # Время добавления
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)  # Время обновления
     class Meta:
         unique_together = ('service', 'part')  # <- исправлено
 
@@ -149,21 +160,23 @@ class News(models.Model):
     short_description = models.CharField(max_length=255)  # Краткое содержание
     image = models.ImageField(upload_to='news_images/', blank=True, null=True)  # Картинка
     published_at = models.DateTimeField(auto_now_add=True)  # Дата публикации
-
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)  # Время добавления
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)  # Время обновления
     def __str__(self):
         return self.title
     
 class GlossaryEntry(models.Model):
     term = models.CharField(max_length=200, unique=True, verbose_name="Термин")
     definition = models.TextField(verbose_name="Определение")
-    created_at = models.DateField(auto_now_add=True, verbose_name="Дата добавления")
-
+    created_at = models.DateField(auto_now_add=True, verbose_name="Дата добавления", blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)  # Время обновления
     def __str__(self):
         return self.term
     
 class Vacancy(models.Model):
     name = models.CharField(max_length=200, unique=True, verbose_name="Название")
     content = models.TextField()
-
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)  # Время добавления
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)  # Время обновления
     def __str__(self):
         return self.name

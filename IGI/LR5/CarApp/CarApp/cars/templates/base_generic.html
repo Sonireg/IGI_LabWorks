@@ -1,4 +1,5 @@
 {% load static %}
+{% load tz %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,6 +20,7 @@
             <a href="{% url 'career' %}">Вакансии</a>
             <a href="#">Клиенты</a>
             <a href="{% url 'services' %}">Услуги</a>
+            
 
             {% if user.is_authenticated %}
                 {% if user.profile.role == 'client' %}
@@ -28,6 +30,9 @@
                     <a href="{% url 'order_list' %}">Заказы</a>
                     <a href="{% url 'crud_index' %}">Добавить что-нибудь</a>
                 {% endif %}
+                {% if user.is_superuser %}
+                    <a href="{% url 'statistics' %}">Статистика</a>
+                {% endif %}
             {% endif %}
             
         </nav>
@@ -35,9 +40,28 @@
     <main>
         {% block content %}
         {% endblock %}
+        
+
     </main>
+    <a href="{% url 'login_user' %}">Войти</a>
+    {% if user.is_authenticated %}
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Выйти</button>
+        </form>
+       
+    {% else %}
+        <a href="{% url 'register_client' %}">Зарегистрироваться</a><br>
+    {% endif %}
+    
     <footer>
-        <p>&copy; 2023 CarApp. All rights reserved.</p>
+        <p>Текущая дата и время (локальные): {{ now|localtime|date:"d/m/Y H:i:s" }}</p>
+        <p>Текущая дата и время (UTC): {{ now|date:"d/m/Y H:i:s" }}</p>
+        <p>Календарь:</p>
+        <pre>
+            {% now "D, d M Y H:i:s" as current_date %}
+            {{ current_date }}
+        </pre>
     </footer>
 </body>
 </html>

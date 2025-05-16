@@ -18,7 +18,7 @@
       <tbody>
         {% for order in orders %}
           <tr>
-            <td>{{ order.id }}</td>
+            <td><a href="{% url 'order_detail' order.id %}">{{ order.id }}</a></td>
             <td>{{ order.get_status_display }}</td>
             <td>
               {% if order.master %}

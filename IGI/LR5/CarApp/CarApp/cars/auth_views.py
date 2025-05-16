@@ -7,6 +7,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LogoutView
 from .models import Client
+from django.core.exceptions import ValidationError
+import re
+from .validators import validate_phone_number
 
 def register_client(request):
     if request.method == 'POST':
@@ -20,36 +23,26 @@ def register_client(request):
         form = ClientRegisterForm()
     return render(request, 'registration/register_client.html', {'form': form})
 
-def login_client(request):
+def login_user(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
             try:
-                if hasattr(user.profile, 'master'):
-                    form.add_error(None, 'Это учётная запись мастера. Используйте форму входа для мастеров.')
+                if user.is_superuser:
+                    role = 'admin'
+                elif hasattr(user.profile, 'master'):
+                    role = 'master'
+                elif hasattr(user.profile, 'client'):
+                    role = 'client'
                 else:
-                    login(request, user)
-                    return redirect('mainpage')
+                    form.add_error(None, 'Профиль не найден.')
+                    return render(request, 'registration/login_user.html', {'form': form})
+                
+                login(request, user)
+                return redirect('mainpage')
             except Profile.DoesNotExist:
                 form.add_error(None, 'Профиль не найден.')
     else:
         form = AuthenticationForm()
-    return render(request, 'registration/login_client.html', {'form': form})
-
-def login_master(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            try:
-                if hasattr(user.profile, 'master'):
-                    login(request, user)
-                    return redirect('mainpage')
-                else:
-                    form.add_error(None, 'Это учётная запись клиента. Используйте форму входа для клиентов.')
-            except Profile.DoesNotExist:
-                form.add_error(None, 'Профиль не найден.')
-    else:
-        form = AuthenticationForm()
-    return render(request, 'registration/login_master.html', {'form': form})
+    return render(request, 'registration/login_user.html', {'form': form})

@@ -10,6 +10,7 @@ from .crud_views import (
     ServiceList, service_update, service_create, ServiceDelete,
     ServiceTypeCreate, ServiceTypeList, ServiceTypeUpdate, ServiceTypeDelete
 )
+from .statistics_view import statistics_view
 
 urlpatterns = [
     path('', views.mainpage, name="mainpage"),
@@ -21,11 +22,11 @@ urlpatterns = [
     path('confidential_policy/', views.policy, name='policy'),
     path('career/', views.vacancy_list, name='career'),
     path('register/client/', auth_views.register_client, name='register_client'),
-    path('login/client/', auth_views.login_client, name='login_client'),
-    path('login/master/', auth_views.login_master, name='login_master'),
+    path('login/', auth_views.login_user, name='login_user'),
     path('logout/', auth_views.LogoutView.as_view(next_page='mainpage'), name='logout'),
     path('orders/', car_views.order_list, name='order_list'),
     path('orders/create/', car_views.create_order, name='create_order'),
+    path('orders/<int:pk>/', car_views.order_detail, name='order_detail'),
     path('services/', car_views.services_list, name='services'),
     path('client_orders/', car_views.client_order_list, name='client_order_list'),
 
@@ -57,4 +58,5 @@ urlpatterns = [
     path('crud/services-master/<int:pk>/edit/', service_update, name='service_edit'),
     path('crud/services-master/<int:pk>/delete/', ServiceDelete.as_view(), name='service_delete'),
 
+    path('statistics/', statistics_view, name='statistics'),
 ]

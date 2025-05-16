@@ -22,14 +22,6 @@
             <p>Пока нет опубликованных статей.</p>
         {% endif %}
     </div>
-    <a href="{% url 'register_client' %}">Зарегистрироваться</a><br>
-    <a href="{% url 'login_client' %}">Войти как клиент</a><br>
-    <a href="{% url 'login_master' %}">Войти как мастер</a>
-    {% if user.is_authenticated %}
-        <form action="{% url 'logout' %}" method="post">
-            {% csrf_token %}
-            <button type="submit">Выйти</button>
-        </form>
-    {% endif %}
+    
 </body>
 {% endblock %}

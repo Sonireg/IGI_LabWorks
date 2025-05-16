@@ -1,7 +1,0 @@
-<h2>Вход для клиента</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Войти</button>
-</form>
-<a href="{% url 'register_client' %}">Нет аккаунта? Зарегистрироваться как клиент</a>
