@@ -18,9 +18,9 @@
             <a href="{% url 'contacts' %}">Мастера</a>
             <a href="{% url 'policy' %}">Политика конфиденциальности</a>
             <a href="{% url 'career' %}">Вакансии</a>
-            <a href="#">Клиенты</a>
             <a href="{% url 'services' %}">Услуги</a>
-            
+            <a href="{% url 'reviews_list' %}">Отзывы</a>
+            <a href="{% url 'promo_codes' %}">Промокоды</a>
 
             {% if user.is_authenticated %}
                 {% if user.profile.role == 'client' %}
@@ -55,13 +55,61 @@
     {% endif %}
     
     <footer>
-        <p>Текущая дата и время (локальные): {{ now|localtime|date:"d/m/Y H:i:s" }}</p>
-        <p>Текущая дата и время (UTC): {{ now|date:"d/m/Y H:i:s" }}</p>
-        <p>Календарь:</p>
-        <pre>
-            {% now "D, d M Y H:i:s" as current_date %}
-            {{ current_date }}
+        <h1>Календарь</h1>
+
+        <p><strong>Текущая дата (серверное время):</strong> {{ now|date:"Y-m-d H:i:s" }}</p>
+        <p>
+            <strong>Ваше локальное время и зона:</strong>
+            <span id="local-date">загрузка…</span>,
+            <span id="tz-name">загрузка…</span>
+        </p>
+        <p>
+            <strong>Текущее время в UTC:</strong>
+            <span id="utc-date">загрузка…</span>
+        </p>
+
+        <h2>Календарь на этот месяц</h2>
+        <pre id="calendar" style="font-family: monospace; line-height:1.2;">
+        загрузка…
         </pre>
+
+        <script>
+            const now = new Date();
+
+            // Локальное время и зона
+            const localDate = now.toLocaleDateString();
+            const localTime = now.toLocaleTimeString();
+            const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            document.getElementById('local-date').textContent = `${localDate} ${localTime}`;
+            document.getElementById('tz-name').textContent = tz;
+
+            // UTC время
+            const utcDate = now.toLocaleDateString('en-US', { timeZone: 'UTC' });
+            const utcTime = now.toLocaleTimeString('en-US', { timeZone: 'UTC' });
+            document.getElementById('utc-date').textContent = `${utcDate} ${utcTime}`;
+
+            // Генерация календаря
+            function generateCalendar(year, month) {
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                const firstDay = new Date(year, month, 1).getDay();
+                const weeks = [];
+                let week = Array((firstDay === 0 ? 6 : firstDay - 1)).fill('  '); // Adjust for Monday start
+
+                for (let day = 1; day <= daysInMonth; day++) {
+                    week.push(day.toString().padStart(2, ' '));
+                    if (week.length === 7 || day === daysInMonth) {
+                        weeks.push(week.join(' '));
+                        week = [];
+                    }
+                }
+
+                const header = 'Mo Tu We Th Fr Sa Su'; // Adjusted for Monday start
+                return [header, ...weeks].join('\n');
+            }
+
+            const calendar = generateCalendar(now.getFullYear(), now.getMonth());
+            document.getElementById('calendar').textContent = calendar;
+        </script>
     </footer>
 </body>
 </html>

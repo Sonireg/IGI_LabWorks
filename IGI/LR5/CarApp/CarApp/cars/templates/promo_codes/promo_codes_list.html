@@ -1,0 +1,29 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Промокоды{% endblock %}
+
+{% block content %}
+<h1>Промокоды</h1>
+
+<h2>Активные промокоды</h2>
+<ul>
+    {% for promo in active_promo_codes %}
+        <li>{{ promo.code }} - Скидка: {{ promo.discount }}% 
+            {% if promo.service %} (Услуга: {{ promo.service.name }}){% endif %}
+        </li>
+    {% empty %}
+        <p>Нет активных промокодов.</p>
+    {% endfor %}
+</ul>
+
+<h2>Архивные промокоды</h2>
+<ul>
+    {% for promo in archived_promo_codes %}
+        <li>{{ promo.code }} - Скидка: {{ promo.discount }}% 
+            {% if promo.service %} (Услуга: {{ promo.service.name }}){% endif %}
+        </li>
+    {% empty %}
+        <p>Нет архивных промокодов.</p>
+    {% endfor %}
+</ul>
+{% endblock %}

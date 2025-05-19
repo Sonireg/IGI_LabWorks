@@ -2,10 +2,32 @@
 {% block content %}
   <h1>Детали</h1>
   <a href="{% url 'part_add' %}">Добавить деталь</a>
+
+  <form method="get">
+    <label for="part_type">Тип детали:</label>
+    <select name="part_type" id="part_type">
+      <option value="">Все</option>
+      {% for type in part_types %}
+        <option value="{{ type.id }}" {% if request.GET.part_type == type.id|stringformat:"s" %}selected{% endif %}>
+          {{ type.name }}
+        </option>
+      {% endfor %}
+    </select>
+
+    <label for="sort_by">Сортировать по:</label>
+    <select name="sort_by" id="sort_by">
+      <option value="">Без сортировки</option>
+      <option value="price_asc" {% if request.GET.sort_by == "price_asc" %}selected{% endif %}>Цена (по возрастанию)</option>
+      <option value="price_desc" {% if request.GET.sort_by == "price_desc" %}selected{% endif %}>Цена (по убыванию)</option>
+    </select>
+
+    <button type="submit">Применить</button>
+  </form>
+
   <ul>
     {% for obj in object_list %}
       <li>
-        {{ obj.name }} — {{ obj.description }}
+        {{ obj.name }} — {{ obj.description }} — {{ obj.price }} руб.
         [<a href="{% url 'part_edit' obj.pk %}">✎</a>]
         [<a href="{% url 'part_delete' obj.pk %}">🗑</a>]
       </li>

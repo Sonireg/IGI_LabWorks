@@ -6,6 +6,7 @@ from django.forms import inlineformset_factory
 from .models import Service, ServicePart, Part
 from .validators import validate_phone_number
 from django.forms.widgets import TextInput
+from .models import Review
 
 class ClientRegisterForm(forms.ModelForm):
     username = forms.CharField(label="Имя пользователя")
@@ -79,3 +80,12 @@ ServicePartFormSet = inlineformset_factory(
     extra=1,
     can_delete=True
 )
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['rating', 'text']
+        widgets = {
+            'rating': forms.Select(choices=[(i, i) for i in range(1, 6)]),
+            'text': forms.Textarea(attrs={'rows': 4}),
+        }

@@ -1,0 +1,23 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}CRUD Index{% endblock %}
+{% block content %}
+<h2>Отзывы</h2>
+<table>
+  <tr>
+    <th>Имя</th>
+    <th>Оценка</th>
+    <th>Текст</th>
+    <th>Дата</th>
+  </tr>
+  {% for review in reviews %}
+  <tr>
+    <td>{{ review.client.username }}</td>
+    <td>{{ review.rating }}</td>
+    <td>{{ review.text }}</td>
+    <td>{{ review.date }}</td>
+  </tr>
+  {% endfor %}
+</table>
+<a href="{% url 'add_review' %}">Добавить отзыв</a>
+{% endblock %}

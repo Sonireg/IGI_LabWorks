@@ -1,3 +1,4 @@
+import logging
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DeleteView
 from .models import CarType, PartType, Part, Service, ServiceType
@@ -5,6 +6,9 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, DeleteView
 from django.urls import reverse_lazy
 from .forms import ServiceForm, ServicePartFormSet
+from django.db.models import Q
+
+logger = logging.getLogger(__name__)
 
 class CrudIndex(TemplateView):
     template_name = 'crud/index.html'
@@ -20,16 +24,31 @@ class CarTypeCreate(CreateView):
     template_name = 'crud/CarType/car_type_form.html'
     success_url = reverse_lazy('cartype_list')
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        logger.debug(f"CarType created: {self.object}")
+        return response
+
 class CarTypeUpdate(UpdateView):
     model = CarType
     fields = ['name', 'description']
     template_name = 'crud/CarType/car_type_form.html'
     success_url = reverse_lazy('cartype_list')
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        logger.debug(f"CarType updated: {self.object}")
+        return response
+
 class CarTypeDelete(DeleteView):
     model = CarType
     template_name = 'crud/CarType/car_type_confirm_delete.html'
     success_url = reverse_lazy('cartype_list')
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        logger.debug(f"CarType deleted: {obj}")
+        return super().delete(request, *args, **kwargs)
 
 # PartType CRUD
 class PartTypeList(ListView):
@@ -42,21 +61,56 @@ class PartTypeCreate(CreateView):
     template_name = 'crud/PartType//part_type_form.html'
     success_url = reverse_lazy('parttype_list')
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        logger.debug(f"PartType created: {self.object}")
+        return response
+
 class PartTypeUpdate(UpdateView):
     model = PartType
     fields = ['name', 'description']
     template_name = 'crud/PartType//part_type_form.html'
     success_url = reverse_lazy('parttype_list')
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        logger.debug(f"PartType updated: {self.object}")
+        return response
+
 class PartTypeDelete(DeleteView):
     model = PartType
     template_name = 'crud/PartType//part_type_confirm_delete.html'
     success_url = reverse_lazy('parttype_list')
 
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        logger.debug(f"PartType deleted: {obj}")
+        return super().delete(request, *args, **kwargs)
+
 # Part CRUD
 class PartList(ListView):
     model = Part
     template_name = 'crud/Part/part_list.html'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        part_type = self.request.GET.get('part_type')
+        sort_by = self.request.GET.get('sort_by')
+
+        if part_type:
+            queryset = queryset.filter(part_type_id=part_type)
+
+        if sort_by == 'price_asc':
+            queryset = queryset.order_by('price')
+        elif sort_by == 'price_desc':
+            queryset = queryset.order_by('-price')
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['part_types'] = PartType.objects.all()
+        return context
 
 class PartCreate(CreateView):
     model = Part
@@ -64,16 +118,32 @@ class PartCreate(CreateView):
     template_name = 'crud/Part/part_form.html'
     success_url = reverse_lazy('part_list')
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        logger.debug(f"Part created: {self.object}")
+        return response
+
 class PartUpdate(UpdateView):
     model = Part
     fields = ['part_type', 'name', 'price', 'quantity', 'compatible_car_types']
     template_name = 'crud/Part/part_form.html'
     success_url = reverse_lazy('part_list')
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        logger.debug(f"Part updated: {self.object}")
+        return response
+
 class PartDelete(DeleteView):
     model = Part
     template_name = 'crud/Part/part_confirm_delete.html'
     success_url = reverse_lazy('part_list')
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        logger.debug(f"Part deleted: {obj}")
+        return super().delete(request, *args, **kwargs)
+
 # ServiceType CRUD
 class ServiceTypeList(ListView):
     model = ServiceType
@@ -85,16 +155,32 @@ class ServiceTypeCreate(CreateView):
     template_name = 'crud/ServiceType/service_type_form.html'
     success_url = reverse_lazy('servicetype_list')
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        logger.debug(f"ServiceType created: {self.object}")
+        return response
+
 class ServiceTypeUpdate(UpdateView):
     model = ServiceType
     fields = ['name', 'description']
     template_name = 'crud/ServiceType/service_type_form.html'
     success_url = reverse_lazy('servicetype_list')
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        logger.debug(f"ServiceType updated: {self.object}")
+        return response
+
 class ServiceTypeDelete(DeleteView):
     model = ServiceType
     template_name = 'crud/ServiceType/service_type_confirm_delete.html'
     success_url = reverse_lazy('servicetype_list')
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        logger.debug(f"ServiceType deleted: {obj}")
+        return super().delete(request, *args, **kwargs)
+
 # Service CRUD
 class ServiceList(ListView):
     model = Service

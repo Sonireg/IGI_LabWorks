@@ -21,6 +21,22 @@
         {% else %}
             <p>Пока нет опубликованных статей.</p>
         {% endif %}
+        {% if user.is_authenticated %}
+        <div class="jokes-section">
+            <h2>Шутки дня</h2>
+            <ul>
+                {% for joke in jokes %}
+                    <li>
+                        <p><strong>{{ joke.setup }}</strong></p>
+                        <p>{{ joke.punchline }}</p>
+                        {% if joke.image_url %}
+                            <img src="{{ joke.image_url }}" alt="Joke Image" width="300">
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
     </div>
     
 </body>

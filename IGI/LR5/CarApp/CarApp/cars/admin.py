@@ -4,7 +4,7 @@ from .models import (
     Master, PartType, Part, Service,
     Order, OrderService, ServicePart, 
     CompanyInfo, News, GlossaryEntry, Profile, 
-    Vacancy
+    Vacancy, Review, PromoCode
 )
 # Register your models here.
 admin.site.register(CarType)
@@ -23,3 +23,5 @@ admin.site.register(News)
 admin.site.register(GlossaryEntry)
 admin.site.register(Profile)
 admin.site.register(Vacancy)
+admin.site.register(Review)
+admin.site.register(PromoCode)

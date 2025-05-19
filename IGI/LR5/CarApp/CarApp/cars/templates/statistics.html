@@ -1,82 +1,48 @@
 {% extends "base_generic.html" %}
 
-{% block title %}Statistics{% endblock %}
+{% block title %}Статистика{% endblock %}
 
 {% block content %}
     {% if user.is_staff %}
-        <h1>Statistics</h1>
+        <h1>Статистика</h1>
         
-        <h2>Clients</h2>
+        <h2>Клиенты</h2>
         <ul>
             {% for client in clients %}
-                <li>{{ client.name }}</li>
+                <li>{{ client.profile.full_name }}</li>
             {% endfor %}
         </ul>
         
-        <h2>Total Sales</h2>
+        <h2>Общая сумма продаж</h2>
         <p>{{ total_sales }}</p>
         
-        <h2>Sales Statistics</h2>
-        <p>Average: {{ sales_avg }}</p>
-        <p>Median: {{ sales_median }}</p>
-        <p>Mode: {{ sales_mode }}</p>
+        <h2>Статистика продаж</h2>
+        <p>Среднее: {{ sales_avg }}</p>
+        <p>Медиана: {{ sales_median }}</p>
+        <p>Мода: {{ sales_mode }}</p>
         
-        <h2>Age Statistics</h2>
-        <p>Average: {{ age_avg }}</p>
-        <p>Median: {{ age_median }}</p>
+        <h2>Статистика возраста</h2>
+        <p>Средний возраст: {{ age_avg }}</p>
+        <p>Медианный возраст: {{ age_median }}</p>
         
-        <h2>Most Popular Service</h2>
+        <h2>Самая популярная услуга</h2>
         {% if popular_service %}
             <p>{{ popular_service.name }}</p>
         {% else %}
-            <p>N/A</p>
+            <p>Н/Д</p>
         {% endif %}
         
-        <h2>Most Profitable Service</h2>
+        <h2>Самая прибыльная услуга</h2>
         {% if profitable_service %}
             <p>{{ profitable_service.name }}</p>
         {% else %}
-            <p>N/A</p>
+            <p>Н/Д</p>
         {% endif %}
         
-        <h2>Sales by Date</h2>
-        <canvas id="salesChart"></canvas>
-        
-        <h2>Service Distribution</h2>
-        <canvas id="servicesChart"></canvas>
-        
-        <script>
-            // Sales by Date Chart
-            const salesData = {
-                labels: [{% for entry in sales_by_date %}"{{ entry.created_at__date }}"{% if not forloop.last %}, {% endif %}{% endfor %}],
-                datasets: [{
-                    label: 'Sales',
-                    data: [{% for entry in sales_by_date %}{{ entry.total }}{% if not forloop.last %}, {% endif %}{% endfor %}],
-                    borderColor: 'blue',
-                    fill: false
-                }]
-            };
-            new Chart(document.getElementById('salesChart'), {
-                type: 'line',
-                data: salesData
-            });
-
-            // Service Distribution Chart
-            const servicesData = {
-                labels: [{% for service in services_distribution %}"{{ service.name }}"{% if not forloop.last %}, {% endif %}{% endfor %}],
-                datasets: [{
-                    label: 'Services',
-                    data: [{% for service in services_distribution %}{{ service.count }}{% if not forloop.last %}, {% endif %}{% endfor %}],
-                    backgroundColor: 'green'
-                }]
-            };
-            new Chart(document.getElementById('servicesChart'), {
-                type: 'bar',
-                data: servicesData
-            });
-        </script>
+        <h2>Распределение услуг</h2>
+        <img src="{{ services_chart_url }}" alt="Диаграмма распределения услуг">
     {% else %}
-        <h1>Access Denied</h1>
-        <p>You do not have permission to view this page.</p>
+        <h1>Доступ запрещён</h1>
+        <p>У вас нет прав для просмотра этой страницы.</p>
     {% endif %}
 {% endblock %}

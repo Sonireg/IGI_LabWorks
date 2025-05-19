@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path
 from . import views
 from . import auth_views
 from . import car_views
@@ -26,7 +26,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(next_page='mainpage'), name='logout'),
     path('orders/', car_views.order_list, name='order_list'),
     path('orders/create/', car_views.create_order, name='create_order'),
-    path('orders/<int:pk>/', car_views.order_detail, name='order_detail'),
+    re_path(r'^orders/(?P<pk>\d+)/$', car_views.order_detail, name='order_detail'),
     path('services/', car_views.services_list, name='services'),
     path('client_orders/', car_views.client_order_list, name='client_order_list'),
 
@@ -59,4 +59,8 @@ urlpatterns = [
     path('crud/services-master/<int:pk>/delete/', ServiceDelete.as_view(), name='service_delete'),
 
     path('statistics/', statistics_view, name='statistics'),
+
+    path('reviews/', views.reviews_list, name='reviews_list'),
+    path('reviews/add/', views.add_review, name='add_review'),
+    path('promo_codes/', views.promo_codes_view, name='promo_codes'),
 ]

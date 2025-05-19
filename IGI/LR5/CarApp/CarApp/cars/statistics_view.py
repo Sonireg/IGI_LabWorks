@@ -3,6 +3,26 @@ from django.db.models import Avg, Max, Min, Sum, Count
 from statistics import mean, median, mode
 from django.contrib.admin.views.decorators import staff_member_required
 from .models import Client, Order, Service
+import matplotlib.pyplot as plt
+import io
+import base64
+
+def generate_chart(data, labels, chart_type='line', title=''):
+    fig, ax = plt.subplots()
+    if chart_type == 'line':
+        ax.plot(labels, data)
+    elif chart_type == 'bar':
+        ax.bar(labels, data)
+    ax.set_title(title)
+    ax.set_xticks(range(len(labels)))
+    ax.set_xticklabels(labels, rotation=45, ha='right')
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    buf.seek(0)
+    chart_url = f"data:image/png;base64,{base64.b64encode(buf.getvalue()).decode('utf-8')}"
+    buf.close()
+    plt.close(fig)
+    return chart_url
 
 @staff_member_required
 def statistics_view(request):
@@ -31,6 +51,14 @@ def statistics_view(request):
     # Data for visualization
     sales_by_date = Order.objects.values('created_at__date').annotate(total=Sum('total_price')).order_by('created_at__date')
     services_distribution = Service.objects.annotate(count=Count('order')).values('name', 'count')
+
+    # Generate charts
+    services_chart_url = generate_chart(
+        data=[entry['count'] for entry in services_distribution],
+        labels=[entry['name'] for entry in services_distribution],
+        chart_type='bar',
+        title='Service Distribution'
+    )
     
     context = {
         'clients': clients,
@@ -42,7 +70,7 @@ def statistics_view(request):
         'age_median': age_median,
         'popular_service': popular_service,
         'profitable_service': profitable_service,
-        'sales_by_date': list(sales_by_date),
         'services_distribution': list(services_distribution),
+        'services_chart_url': services_chart_url,
     }
     return render(request, 'statistics.html', context)

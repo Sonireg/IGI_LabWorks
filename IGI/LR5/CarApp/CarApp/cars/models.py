@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.contrib.auth.models import User
 
 # Типы автомобилей
 class CarType(models.Model):
@@ -21,7 +22,7 @@ class Profile(models.Model):
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default="master")
     phone = models.CharField(max_length=20, blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
-    photo = models.ImageField(upload_to='profiles/', blank=True, null=True)
+    photo = models.ImageField(upload_to='profiles/', blank=True, null=True, default='placeholder.png')
     email = models.EmailField(blank=True, null=True)
     full_name = models.CharField(max_length=255)
     age = models.IntegerField(MinValueValidator(18), blank=True, null=True)
@@ -29,6 +30,9 @@ class Profile(models.Model):
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)  # Время обновления
     def __str__(self):
         return f"{self.full_name} ({self.role})"
+
+    def get_image_url(self):
+        return self.photo.url if self.photo else 'placeholder.png'
 
     class Meta:
         verbose_name = 'Profile'
@@ -158,12 +162,15 @@ class News(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
     short_description = models.CharField(max_length=255)  # Краткое содержание
-    image = models.ImageField(upload_to='news_images/', blank=True, null=True)  # Картинка
+    image = models.ImageField(upload_to='news_images/', blank=True, null=True, default='placeholder.png')  # Картинка
     published_at = models.DateTimeField(auto_now_add=True)  # Дата публикации
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)  # Время добавления
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)  # Время обновления
     def __str__(self):
         return self.title
+
+    def get_image_url(self):
+        return self.image.url if self.image else 'placeholder.png'
     
 class GlossaryEntry(models.Model):
     term = models.CharField(max_length=200, unique=True, verbose_name="Термин")
@@ -180,3 +187,23 @@ class Vacancy(models.Model):
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)  # Время обновления
     def __str__(self):
         return self.name
+
+class Review(models.Model):
+    client = models.ForeignKey(User, on_delete=models.CASCADE)
+    rating = models.PositiveSmallIntegerField(choices=[(i, i) for i in range(1, 6)])
+    text = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.client.username} - {self.rating} stars"
+
+class PromoCode(models.Model):
+    code = models.CharField(max_length=50, unique=True, verbose_name="Промокод")
+    discount = models.DecimalField(max_digits=5, decimal_places=2, verbose_name="Скидка (%)")
+    is_active = models.BooleanField(default=True, verbose_name="Активен")
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, verbose_name="Услуга", null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
+
+    def __str__(self):
+        return f"{self.code} - {'Активен' if self.is_active else 'Архив'}"
