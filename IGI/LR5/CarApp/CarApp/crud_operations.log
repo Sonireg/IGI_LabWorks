@@ -4029,3 +4029,31 @@ INFO 2025-05-19 17:47:30,072 autoreload /home/denis/IGI_LabWorks/IGI/LR5/CarApp/
 INFO 2025-05-19 17:47:30,376 autoreload Watching for file changes with StatReloader
 INFO 2025-05-19 17:47:44,026 autoreload /home/denis/IGI_LabWorks/IGI/LR5/CarApp/CarApp/cars/statistics_view.py changed, reloading.
 INFO 2025-05-19 17:47:44,290 autoreload Watching for file changes with StatReloader
+INFO 2025-05-19 18:40:50,999 autoreload Watching for file changes with StatReloader
+INFO 2025-05-19 18:40:55,784 basehttp "GET / HTTP/1.1" 200 3931
+INFO 2025-05-19 18:40:56,376 basehttp "GET / HTTP/1.1" 200 3931
+INFO 2025-05-19 18:40:57,724 basehttp "GET /news/ HTTP/1.1" 200 6755
+INFO 2025-05-19 18:40:59,726 basehttp "GET /news/1/ HTTP/1.1" 200 3822
+INFO 2025-05-19 18:52:21,647 autoreload Watching for file changes with StatReloader
+INFO 2025-05-19 18:55:23,191 autoreload Watching for file changes with StatReloader
+INFO 2025-05-19 19:01:48,479 autoreload Watching for file changes with StatReloader
+INFO 2025-05-19 19:02:13,187 basehttp "GET / HTTP/1.1" 200 3931
+INFO 2025-05-19 19:02:13,242 basehttp "GET /media/placeholder.png HTTP/1.1" 200 3944
+INFO 2025-05-19 19:02:14,387 basehttp "GET / HTTP/1.1" 200 3931
+INFO 2025-05-19 19:02:14,975 basehttp "GET / HTTP/1.1" 200 3931
+INFO 2025-05-19 19:02:16,977 basehttp "GET /about/ HTTP/1.1" 200 3749
+INFO 2025-05-19 19:02:34,815 basehttp "GET /career/ HTTP/1.1" 200 4619
+INFO 2025-05-19 19:02:37,541 basehttp "GET /career/ HTTP/1.1" 200 4619
+INFO 2025-05-19 19:03:16,390 autoreload Watching for file changes with StatReloader
+INFO 2025-05-19 19:03:21,789 basehttp "GET / HTTP/1.1" 200 3931
+INFO 2025-05-19 19:03:22,439 basehttp "GET / HTTP/1.1" 200 3931
+INFO 2025-05-19 19:03:23,666 basehttp "GET /career/ HTTP/1.1" 200 4891
+INFO 2025-05-19 19:03:27,160 basehttp "GET /confidential_policy/ HTTP/1.1" 200 3601
+INFO 2025-05-19 19:03:28,854 basehttp "GET /contacts/ HTTP/1.1" 200 7102
+INFO 2025-05-19 19:03:29,683 basehttp "GET /faq/ HTTP/1.1" 200 5100
+INFO 2025-05-19 19:03:30,452 basehttp "GET /contacts/ HTTP/1.1" 200 7102
+INFO 2025-05-19 19:03:41,622 basehttp "GET /news/ HTTP/1.1" 200 6755
+INFO 2025-05-19 19:03:43,975 basehttp "GET /news/3/ HTTP/1.1" 200 3822
+INFO 2025-05-19 19:03:47,353 basehttp "GET / HTTP/1.1" 200 3931
+INFO 2025-05-19 19:07:41,756 autoreload Watching for file changes with StatReloader
+INFO 2025-05-19 19:14:23,957 autoreload Watching for file changes with StatReloader
