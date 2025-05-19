@@ -8,13 +8,13 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /app
 
 # Copy requirements
-COPY IGI/LR5/CarApp/requirements.txt /app/
+COPY IGI/LR5/CarApp/CarApp/requirements.txt /app/
 
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy all project files (only the app folder)
-COPY IGI/LR5/CarApp/ /app/
+COPY IGI/LR5/CarApp/CarApp/ /app/
 
 # Expose port
 EXPOSE 8000
