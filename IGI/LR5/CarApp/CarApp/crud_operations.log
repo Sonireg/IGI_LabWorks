@@ -4057,3 +4057,48 @@ INFO 2025-05-19 19:03:43,975 basehttp "GET /news/3/ HTTP/1.1" 200 3822
 INFO 2025-05-19 19:03:47,353 basehttp "GET / HTTP/1.1" 200 3931
 INFO 2025-05-19 19:07:41,756 autoreload Watching for file changes with StatReloader
 INFO 2025-05-19 19:14:23,957 autoreload Watching for file changes with StatReloader
+INFO 2025-05-20 11:18:01,033 autoreload Watching for file changes with StatReloader
+INFO 2025-05-20 11:18:07,751 basehttp "GET / HTTP/1.1" 200 3931
+INFO 2025-05-20 11:18:07,807 basehttp "GET /media/placeholder.png HTTP/1.1" 304 0
+INFO 2025-05-20 11:18:07,812 basehttp "GET /static/css/styles.css HTTP/1.1" 200 1854
+WARNING 2025-05-20 11:18:07,851 log Not Found: /favicon.ico
+WARNING 2025-05-20 11:18:07,851 basehttp "GET /favicon.ico HTTP/1.1" 404 14630
+INFO 2025-05-20 11:18:10,219 basehttp "GET /login/ HTTP/1.1" 200 705
+INFO 2025-05-20 11:18:14,996 basehttp "POST /login/ HTTP/1.1" 302 0
+INFO 2025-05-20 11:18:23,195 basehttp "GET / HTTP/1.1" 200 5825
+INFO 2025-05-20 11:18:24,563 basehttp "GET /crud/news/ HTTP/1.1" 200 7063
+ERROR 2025-05-20 11:18:26,760 log Internal Server Error: /crud/news/1/edit/
+Traceback (most recent call last):
+  File "/home/denis/.local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/denis/.local/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/denis/.local/lib/python3.10/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/denis/.local/lib/python3.10/site-packages/django/contrib/auth/mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/home/denis/.local/lib/python3.10/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/denis/.local/lib/python3.10/site-packages/django/views/generic/edit.py", line 202, in get
+    return super().get(request, *args, **kwargs)
+  File "/home/denis/.local/lib/python3.10/site-packages/django/views/generic/edit.py", line 142, in get
+    return self.render_to_response(self.get_context_data())
+  File "/home/denis/.local/lib/python3.10/site-packages/django/views/generic/edit.py", line 72, in get_context_data
+    kwargs["form"] = self.get_form()
+  File "/home/denis/.local/lib/python3.10/site-packages/django/views/generic/edit.py", line 36, in get_form
+    form_class = self.get_form_class()
+  File "/home/denis/.local/lib/python3.10/site-packages/django/views/generic/edit.py", line 108, in get_form_class
+    return model_forms.modelform_factory(model, fields=self.fields)
+  File "/home/denis/.local/lib/python3.10/site-packages/django/forms/models.py", line 654, in modelform_factory
+    return type(form)(class_name, (form,), form_class_attrs)
+  File "/home/denis/.local/lib/python3.10/site-packages/django/forms/models.py", line 334, in __new__
+    raise FieldError(message)
+django.core.exceptions.FieldError: Unknown field(s) (published_date) specified for News
+ERROR 2025-05-20 11:18:26,761 basehttp "GET /crud/news/1/edit/ HTTP/1.1" 500 112199
+INFO 2025-05-20 11:19:43,920 autoreload /home/denis/IGI_LabWorks/IGI/LR5/CarApp/CarApp/cars/crud_views.py changed, reloading.
+INFO 2025-05-20 11:19:44,198 autoreload Watching for file changes with StatReloader
+INFO 2025-05-20 11:19:57,016 basehttp "GET /crud/news/1/edit/ HTTP/1.1" 200 5191
+INFO 2025-05-20 11:20:08,409 basehttp "GET /crud/news/10/delete/ HTTP/1.1" 200 4403
+INFO 2025-05-20 11:20:09,839 basehttp "POST /crud/news/10/delete/ HTTP/1.1" 302 0
+INFO 2025-05-20 11:20:09,849 basehttp "GET /crud/news/ HTTP/1.1" 200 8930
+INFO 2025-05-20 11:20:20,367 basehttp "GET / HTTP/1.1" 200 5818

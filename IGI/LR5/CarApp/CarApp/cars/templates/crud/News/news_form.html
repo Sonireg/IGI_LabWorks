@@ -1,11 +1,10 @@
-
 {% extends "base_generic.html" %}
 
 {% block title %}{{ view.object|default:"Создание новости" }}{% endblock %}
 
 {% block content %}
 <h1>{{ view.object|default:"Создание новости" }}</h1>
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Сохранить</button>

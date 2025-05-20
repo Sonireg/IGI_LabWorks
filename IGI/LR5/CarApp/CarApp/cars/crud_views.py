@@ -233,13 +233,13 @@ class NewsList(AdminRequiredMixin, ListView):
 
 class NewsCreate(AdminRequiredMixin, CreateView):
     model = News
-    fields = ['title', 'content', 'published_date']
+    fields = ['title', 'short_description', 'content', 'image']
     template_name = 'crud/News/news_form.html'
     success_url = reverse_lazy('news_list_admin')
 
 class NewsUpdate(AdminRequiredMixin, UpdateView):
     model = News
-    fields = ['title', 'content', 'published_date']
+    fields = ['title', 'short_description', 'content', 'image']
     template_name = 'crud/News/news_form.html'
     success_url = reverse_lazy('news_list_admin')
 

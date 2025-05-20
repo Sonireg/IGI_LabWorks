@@ -1,4 +1,3 @@
-
 {% extends "base_generic.html" %}
 
 {% block title %}Управление новостями{% endblock %}
@@ -10,6 +9,8 @@
     <thead>
         <tr>
             <th>Заголовок</th>
+            <th>Краткое описание</th>
+            <th>Изображение</th>
             <th>Дата публикации</th>
             <th>Действия</th>
         </tr>
@@ -18,7 +19,15 @@
         {% for news in object_list %}
         <tr>
             <td>{{ news.title }}</td>
-            <td>{{ news.published_date }}</td>
+            <td>{{ news.short_description }}</td>
+            <td>
+                {% if news.image %}
+                    <img src="{{ news.image.url }}" alt="{{ news.title }}" style="max-height: 50px;">
+                {% else %}
+                    Нет изображения
+                {% endif %}
+            </td>
+            <td>{{ news.published_at }}</td>
             <td>
                 <a href="{% url 'news_edit' news.pk %}">Редактировать</a>
                 <a href="{% url 'news_delete' news.pk %}">Удалить</a>
