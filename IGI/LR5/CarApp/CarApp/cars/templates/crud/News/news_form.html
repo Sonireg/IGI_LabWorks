@@ -1,0 +1,14 @@
+
+{% extends "base_generic.html" %}
+
+{% block title %}{{ view.object|default:"Создание новости" }}{% endblock %}
+
+{% block content %}
+<h1>{{ view.object|default:"Создание новости" }}</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Сохранить</button>
+    <a href="{% url 'news_list_admin' %}">Отмена</a>
+</form>
+{% endblock %}
