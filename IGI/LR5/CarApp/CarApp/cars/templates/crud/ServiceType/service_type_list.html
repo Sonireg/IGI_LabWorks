@@ -7,7 +7,6 @@
       <li>
         {{ obj.name }} — {{ obj.description }}
         [<a href="{% url 'servicetype_edit' obj.pk %}">✎</a>]
-        [<a href="{% url 'servicetype_delete' obj.pk %}">🗑</a>]
       </li>
     {% empty %}
       <li>Пока нет типов услуг.</li>

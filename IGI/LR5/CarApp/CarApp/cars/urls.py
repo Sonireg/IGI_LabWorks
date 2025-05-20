@@ -8,7 +8,8 @@ from .crud_views import (
     PartTypeList, PartTypeCreate, PartTypeUpdate, PartTypeDelete,
     PartList, PartCreate, PartUpdate, PartDelete,
     ServiceList, service_update, service_create, ServiceDelete,
-    ServiceTypeCreate, ServiceTypeList, ServiceTypeUpdate, ServiceTypeDelete
+    ServiceTypeCreate, ServiceTypeList, ServiceTypeUpdate, ServiceTypeDelete,
+    NewsList, NewsCreate, NewsUpdate, NewsDelete
 )
 from .statistics_view import statistics_view
 
@@ -63,4 +64,9 @@ urlpatterns = [
     path('reviews/', views.reviews_list, name='reviews_list'),
     path('reviews/add/', views.add_review, name='add_review'),
     path('promo_codes/', views.promo_codes_view, name='promo_codes'),
+
+    path('crud/news/', NewsList.as_view(), name='news_list_admin'),
+    path('crud/news/add/', NewsCreate.as_view(), name='news_add'),
+    path('crud/news/<int:pk>/edit/', NewsUpdate.as_view(), name='news_edit'),
+    path('crud/news/<int:pk>/delete/', NewsDelete.as_view(), name='news_delete'),
 ]

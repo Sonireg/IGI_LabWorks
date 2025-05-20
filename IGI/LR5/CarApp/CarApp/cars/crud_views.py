@@ -7,8 +7,14 @@ from django.views.generic import ListView, DeleteView
 from django.urls import reverse_lazy
 from .forms import ServiceForm, ServicePartFormSet
 from django.db.models import Q
+from django.contrib.auth.mixins import UserPassesTestMixin
+from .models import News
 
 logger = logging.getLogger(__name__)
+
+class AdminRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_superuser
 
 class CrudIndex(TemplateView):
     template_name = 'crud/index.html'
@@ -219,3 +225,25 @@ class ServiceDelete(DeleteView):
     model = Service
     template_name = 'crud/Service/service_confirm_delete.html'
     success_url = reverse_lazy('service_list')
+
+# News CRUD
+class NewsList(AdminRequiredMixin, ListView):
+    model = News
+    template_name = 'crud/News/news_list.html'
+
+class NewsCreate(AdminRequiredMixin, CreateView):
+    model = News
+    fields = ['title', 'content', 'published_date']
+    template_name = 'crud/News/news_form.html'
+    success_url = reverse_lazy('news_list_admin')
+
+class NewsUpdate(AdminRequiredMixin, UpdateView):
+    model = News
+    fields = ['title', 'content', 'published_date']
+    template_name = 'crud/News/news_form.html'
+    success_url = reverse_lazy('news_list_admin')
+
+class NewsDelete(AdminRequiredMixin, DeleteView):
+    model = News
+    template_name = 'crud/News/news_confirm_delete.html'
+    success_url = reverse_lazy('news_list_admin')

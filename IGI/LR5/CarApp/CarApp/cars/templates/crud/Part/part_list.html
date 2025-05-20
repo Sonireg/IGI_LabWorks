@@ -29,7 +29,6 @@
       <li>
         {{ obj.name }} — {{ obj.description }} — {{ obj.price }} руб.
         [<a href="{% url 'part_edit' obj.pk %}">✎</a>]
-        [<a href="{% url 'part_delete' obj.pk %}">🗑</a>]
       </li>
     {% empty %}
       <li>Пока нет деталей.</li>
